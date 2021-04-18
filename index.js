@@ -96,6 +96,23 @@ client.connect((err) => {
       });
   });
 
+  app.get("/order/:id", (req, res) => {
+    ordersCollection
+      .find({ _id: ObjectId(req.params.id) })
+      .toArray((err, documents) => {
+        res.send(documents[0]);
+      });
+  });
+
+  app.patch('/update/:id', (req,res) => {
+    ordersCollection.updateOne({ _id: ObjectId(req.params.id)},
+    {
+      $set: {status: req.body.status}
+    }).then(result => {
+      console.log(result);
+    })
+  })
+
   app.delete("/delete/:id", (req, res) => {
     servicesCollection
       .deleteOne({ _id: ObjectId(req.params.id) })
